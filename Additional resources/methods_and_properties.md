@@ -156,7 +156,7 @@ class Order(models.Model):
        print(order.total)  # Hits DB for items each time
    
    # GOOD: Prefetch related
-   for order in Order.objects.prefetch_related('items').all():
+   for order in Order.objects.prefetch_related('items'):
        print(order.total)
    ```
 2. **Overusing `@property`** - Don't put heavy computations here without caching.
