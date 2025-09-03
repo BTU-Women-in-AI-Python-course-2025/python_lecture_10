@@ -116,7 +116,7 @@ courses = Course.objects.prefetch_related(
   ```
 - **Good:**  
   ```python
-  books = Book.objects.select_related('author').all()
+  books = Book.objects.select_related('author')
   authors = [book.author for book in books]  # 1 query!
   ```
 
