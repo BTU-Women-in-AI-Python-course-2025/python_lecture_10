@@ -68,7 +68,7 @@ for course in courses:
 
 ### **Optimized with `prefetch_related`**
 ```python
-courses = Course.objects.prefetch_related('students').all()  # 2 queries
+courses = Course.objects.prefetch_related('students')  # 2 queries
 for course in courses:
     print(course.students.all())  # No additional queries!
 ```
