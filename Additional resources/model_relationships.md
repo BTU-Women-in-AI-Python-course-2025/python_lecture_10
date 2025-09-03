@@ -93,7 +93,7 @@ class Course(models.Model):
 - Example:  
   ```python
   class Book(models.Model):
-      author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name="books")
+      author = models.ForeignKey(to='Author', on_delete=models.CASCADE, related_name="books")
   ```
   Now, instead of `author.book_set.all()`, use `author.books.all()`.  
 
