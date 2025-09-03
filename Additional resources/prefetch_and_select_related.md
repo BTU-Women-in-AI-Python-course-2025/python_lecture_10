@@ -39,7 +39,7 @@ for book in books:
 
 ### **Optimized with `select_related`**
 ```python
-books = Book.objects.select_related('author').all()  # 1 query with JOIN
+books = Book.objects.select_related('author')  # 1 query with JOIN
 for book in books:
     print(book.author.name)  # No additional queries!
 ```
