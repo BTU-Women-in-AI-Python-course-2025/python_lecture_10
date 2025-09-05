@@ -1,6 +1,19 @@
 from django.db import models
 
 
+class Author(models.Model):
+    first_name = models.CharField(verbose_name='First name', max_length=100)
+    last_name = models.CharField(verbose_name='Last name', max_length=100)
+    email = models.EmailField(verbose_name='Email')
+
+    class Meta:
+        verbose_name = "Author"
+        verbose_name_plural = "Authors"
+
+    def __str__(self):
+        return f"{self.first_name} - {self.last_name}"
+
+
 class BlogPost(models.Model):
     title = models.CharField(verbose_name='სათაური', max_length=255)
     text = models.TextField(verbose_name='ტექსტი')
@@ -11,7 +24,11 @@ class BlogPost(models.Model):
         verbose_name='განახლების თარიღი', auto_now=True, null=True)
     website = models.URLField(verbose_name='ვებ მისამართი', null=True)
     document = models.FileField(upload_to='blog_post_documents/', null=True)
-    picture = models.ImageField(upload_to='blog_post_picture/', null=True)
+    authors = models.ManyToManyField(
+        to="Author",
+        related_name='blog_posts',
+        verbose_name='Authors'
+    )
 
     class Meta:
         verbose_name = "Blog Post"
@@ -23,8 +40,18 @@ class BlogPost(models.Model):
         return self.title
 
 
-class BaseModel(models.Model):
-    created_at = models.DateTimeField(auto_now_add=True)
+class BlogPostImage(models.Model):
+    blog_post = models.ForeignKey(
+        to="BlogPost",
+        related_name='images',
+        verbose_name='Blog Post',
+        on_delete=models.CASCADE
+    )
+    image = models.ImageField(verbose_name="Image", upload_to='blog_post_images/')
 
     class Meta:
-        abstract = True
+        verbose_name = "Blog Post Image"
+        verbose_name_plural = "Blog Post Images"
+
+    def __str__(self):
+        return f"{self.blog_post.title} - {self.id}"
