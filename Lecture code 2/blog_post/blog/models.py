@@ -1,3 +1,4 @@
+from datetime import date
 from django.db import models
 
 
@@ -5,6 +6,14 @@ class Author(models.Model):
     first_name = models.CharField(verbose_name='First name', max_length=100)
     last_name = models.CharField(verbose_name='Last name', max_length=100)
     email = models.EmailField(verbose_name='Email')
+    birth_date = models.DateField(verbose_name='Birth date', null=True)
+
+    @property
+    def age(self) -> int:
+        today = date.today()
+        return today.year - self.birth_date.year - (
+                (today.month, today.day) < (self.birth_date.month, self.birth_date.day)
+        )
 
     class Meta:
         verbose_name = "Author"
@@ -49,6 +58,9 @@ class BlogPost(models.Model):
         verbose_name='Authors 2',
         through='BlogPostAuthorThroughTable',
     )
+
+    def get_images(self):
+        return self.images.all()
 
     class Meta:
         verbose_name = "Blog Post"
