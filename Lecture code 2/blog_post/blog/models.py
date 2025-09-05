@@ -40,6 +40,23 @@ class BlogPost(models.Model):
         return self.title
 
 
+class BlogPostCover(models.Model):
+    blog_post = models.OneToOneField(
+        to="BlogPost",
+        verbose_name='Blog Post',
+        related_name='cover',
+        on_delete=models.CASCADE
+    )
+    image = models.ImageField(verbose_name="Image", upload_to='blog_post_covers/')
+
+    class Meta:
+        verbose_name = "Blog Post Cover"
+        verbose_name_plural = "Blog Post Covers"
+
+    def __str__(self):
+        return f"{self.blog_post.title} - Cover id: {self.id}"
+
+
 class BlogPostImage(models.Model):
     blog_post = models.ForeignKey(
         to="BlogPost",
