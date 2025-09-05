@@ -14,6 +14,20 @@ class Author(models.Model):
         return f"{self.first_name} - {self.last_name}"
 
 
+class BlogPostAuthorThroughTable(models.Model):
+    authors = models.ForeignKey(to='Author', on_delete=models.CASCADE, verbose_name='Authors')
+    blog_post = models.ForeignKey(to='BlogPost', on_delete=models.CASCADE, verbose_name='BlogPost')
+    date = models.DateField(verbose_name='Date')
+
+    class Meta:
+        verbose_name = "Blog Post author through table"
+        verbose_name_plural = "Blog Posts"
+
+    def __str__(self):
+        return self.blog_post.title
+
+
+
 class BlogPost(models.Model):
     title = models.CharField(verbose_name='სათაური', max_length=255)
     text = models.TextField(verbose_name='ტექსტი')
@@ -28,6 +42,12 @@ class BlogPost(models.Model):
         to="Author",
         related_name='blog_posts',
         verbose_name='Authors'
+    )
+    authors_2 = models.ManyToManyField(
+        to="Author",
+        related_name='blog_posts_2',
+        verbose_name='Authors 2',
+        through='BlogPostAuthorThroughTable',
     )
 
     class Meta:
